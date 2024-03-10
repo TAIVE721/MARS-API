@@ -1,0 +1,25 @@
+###
+GET  http://localhost:1234/categories
+        
+###     
+POST http://localhost:1234/categories
+Content-Type: application/json
+
+{
+  "Priority": 4,
+  "CategoryName": "Papu despierta"
+}
+
+###
+PATCH http://localhost:1234/categories/3
+Content-Type: application/json
+
+{
+  "Priority": 4,
+  "CategoryName": "Papu es hora de que despiertes"
+}
+
+
+###  
+DELETE http://localhost:1234/categories/10
+

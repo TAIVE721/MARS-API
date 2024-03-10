@@ -1,35 +1,54 @@
-import e from "cors";
-import mysql from "mysql2/promise";
+import z from "zod";
 
-const config = {
-  host: "127.0.0.1",
-  user: "root",
-  port: 3306,
-  password: "",
-  database: "elementsmars",
-};
+const ElementSchema = z.object({
+  Category: z.object({
+    id: z
+      .number({
+        required_error: "Category ID is required",
+        invalid_type_error: "Category ID must be a number",
+      })
+      .positive()
+      .min(1),
+    Priority: z
+      .number({
+        required_error: "Category Priority is required",
+        invalid_type_error: "Category Priority must be a number",
+      })
+      .min(1)
+      .max(5),
+    CategoryName: z.string({
+      required_error: "Category Name is required",
+      invalid_type_error: "Category Name must be a string",
+    }),
+  }),
+  name: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
+  weight: z
+    .number({
+      required_error: "Weight is required",
+      invalid_type_error: "Weight must be a number",
+    })
+    .positive()
+    .min(1),
+  description: z
+    .string({
+      required_error: "Description is required",
+      invalid_type_error: "Description must be a string",
+    })
+    .optional(),
+});
 
-const connection = await mysql.createConnection(config);
+export function validateElement(element) {
+  return ElementSchema.safeParse(element);
+}
 
-const [ElementsModelSql] =
-  await connection.query(`SELECT BIN_TO_UUID(ElementsToMars.id) AS ElementID, categorys.id , categorys.Priority ,categorys.CategoryName , 
-  ElementsToMars.name, ElementsToMars.weight, ElementsToMars.description
-  FROM ElementsToMars
-  JOIN categorys ON ElementsToMars.Category = Categorys.id`);
-
-const result = ElementsModelSql.map((element) => {
-  const TrueElement = {
-    id: element.ElementID,
-    category: {
-      id: element.id,
-      priority: element.Priority,
-      categoryName: element.CategoryName,
-    },
-    name: element.name,
-    weight: element.weight,
-    description: element.description,
-  };
-  return TrueElement;
+const result = validateElement({
+  Category: { id: 1, Priority: 1, CategoryName: "Propulsion" },
+  name: "Element 1",
+  weight: 200,
+  description: "Element 1 description",
 });
 
 console.log(result);

@@ -1,13 +1,6 @@
 import z from "zod";
 
 const CategoriesSchema = z.object({
-  id: z
-    .number({
-      required_error: "Category ID is required",
-      invalid_type_error: "Category ID must be a number",
-    })
-    .positive()
-    .min(1),
   Priority: z
     .number({
       required_error: "Category Priority is required",

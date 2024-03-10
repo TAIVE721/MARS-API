@@ -37,19 +37,126 @@ export class ElementsModelSql {
     return result;
   }
 
-  //falta checar mas el data y todo eso para que funcione
+  static async create({ data }) {
+    const [uuidResult] = await connection.query("SELECT UUID() uuid;");
+    const [{ uuid }] = uuidResult;
 
-  static async create(data) {
-    const result = await connection.query(
+    try {
+      const result = await connection.query(
+        `
+      INSERT INTO ElementsToMars (id, Category, name, weight, description) VALUES 
+      ( UUID_TO_BIN(?),(SELECT id FROM categorys WHERE id = ? ), ? , ?, ?)
+      `,
+        [uuid, data.Category.id, data.name, data.weight, data.description]
+      );
+    } catch (error) {
+      throw new Error("Error creating Element");
+    }
+
+    const [rows] = await connection.query(
       `
-    INSERT INTO elementstomars (Category, name, weight, description) VALUES 
-  ((SELECT id FROM categorys WHERE id = ? ), "Hidrogen" , 1000, 'To power the ship'),
-    `,
-      []
+      SELECT BIN_TO_UUID(id) as id , Category , name , weight , description
+       FROM ElementsToMars WHERE id = UUID_TO_BIN(?)
+      `,
+      [uuid]
     );
+
+    return rows[0];
   }
 
-  static async update({ id, data }) {}
+  static async update({ id, data }) {
+    const [ElementToUpdate] = await connection.query(
+      `
+    SELECT *
+    FROM elementstomars
+    WHERE
+    id = UUID_TO_BIN(?)
+    `,
+      [id]
+    );
 
-  static async delete(id) {}
+    if (ElementToUpdate.length === 0) return false;
+
+    data = {
+      ...data,
+      Category: data.Category.id,
+    };
+
+    ElementToUpdate[0] = {
+      ...ElementToUpdate[0],
+      id: id,
+      ...data,
+    };
+
+    const [[CategoryToReturn]] = await connection.query(
+      `
+      SELECT * FROM categorys
+        WHERE id = ?
+      `,
+      [ElementToUpdate[0].Category]
+    );
+
+    try {
+      await connection.query(
+        `
+      UPDATE elementstomars
+      SET
+      Category = (SELECT id FROM categorys WHERE id = ?),
+      name = ?,
+      weight = ?,
+      description = ?
+      WHERE
+      id = UUID_TO_BIN(?)
+      `,
+        [
+          ElementToUpdate[0].Category,
+          ElementToUpdate[0].name,
+          ElementToUpdate[0].weight,
+          ElementToUpdate[0].description,
+          id,
+        ]
+      );
+    } catch (error) {
+      throw new Error("Error updating Element");
+    }
+
+    ElementToUpdate[0] = {
+      ...ElementToUpdate[0],
+      Category: {
+        ...CategoryToReturn,
+      },
+    };
+
+    return ElementToUpdate[0];
+  }
+
+  static async delete(id) {
+    const [ElementToDelete] = await connection.query(
+      `
+    SELECT *
+    FROM elementstomars
+    WHERE
+    id = UUID_TO_BIN(?)
+    `,
+      [id]
+    );
+
+    if (ElementToDelete.length === 0) return false;
+
+    try {
+      await connection.query(
+        `
+      DELETE
+      FROM elementstomars
+      WHERE
+      id = UUID_TO_BIN(?)
+      `,
+        [id]
+      );
+    } catch (error) {
+      throw new Error("Error deleting Element");
+    }
+
+    return true;
+  }
 }

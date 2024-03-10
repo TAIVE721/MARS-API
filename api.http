@@ -1,6 +1,37 @@
 ###
 GET  http://localhost:1234/elements
+        
+###    
+POST http://localhost:1234/elements
+Content-Type: application/json
+
+{
+    "Category": {
+      "id": 3,
+      "Priority": 1,
+      "CategoryName": "Propulsion"
+    },
+    "name": "MUchas aventruas enn appulandi",
+    "weight": 2000,
+    "description": "xassa"
+}
+ 
+###   
+PATCH http://localhost:1234/elements/12ebbfdb-df2f-11ee-9b13-0250fe5d1b54
+Content-Type: application/json
+
+{
+    "Category": {
+      "id": 14,
+      "Priority": 1,
+      "CategoryName": "Propulsion"
+    },
+    "name": "xxxxandi",
+    "weight": 2000,
+    "description": "xassa"
+}
+
 
 ###
-POST http://localhost:1234/movies
-Content-Type: application/json
+DELETE http://localhost:1234/elements/714e7798-df1b-11ee-9b13-0250fe5d1b54
+

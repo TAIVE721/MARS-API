@@ -4,7 +4,7 @@ DROP DATABASE IF EXISTS elementsmars
 
 CREATE DATABASE elementsmars
 
-USE DATABASE moviesdb
+USE elementsmars
 
 DROP TABLE IF EXISTS Categorys
 
@@ -40,7 +40,7 @@ VALUES (
     (
         3, 'Inertial Measurement Unit (IMU)', 200, 'To control the ship'
     )
-
+    -- Querys For Practice And see The result / ElementsToMars
 SELECT BIN_TO_UUID(ElementsToMars.id) AS ElementID, categorys.id, categorys.Priority, categorys.CategoryName, ElementsToMars.name, ElementsToMars.weight, ElementsToMars.description
 FROM ElementsToMars
     JOIN categorys ON ElementsToMars.Category = Categorys.id
@@ -56,4 +56,29 @@ VALUES (
             WHERE
                 id = 2
         ), "Hidrogen", 1000, 'To power the ship'
-    ),
+    )
+
+SELECT BIN_TO_UUID(id) id FROM elementstomars
+
+SELECT *
+FROM elementstomars
+WHERE
+    ID = UUID_TO_BIN(
+        '714e759c-df1b-11ee-9b13-0250fe5d1b54'
+    )
+    -- Querys For Practice And see The result / Categorys
+
+SELECT id, Priority, CategoryName FROM Categorys
+
+INSERT INTO
+    categorys (Priority, CategoryName)
+VALUES (4, 'Papu despierta')
+
+SELECT id, Priority, CategoryName FROM categorys WHERE id = 6
+
+UPDATE categorys
+SET
+    Priority = 4,
+    CategoryName = "hola"
+WHERE
+    id = 6

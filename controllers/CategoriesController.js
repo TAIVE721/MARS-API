@@ -10,28 +10,34 @@ export class CategoriesController {
 
   getAll = async (req, res) => {
     const categories = await this.CategoriesModel.getAll();
-    res(categories);
+    res.json(categories);
   };
 
   create = async (req, res) => {
-    const { data } = ValidateCategory(req.body);
-    const newCategory = await this.CategoriesModel.create(data);
-    res(newCategory);
+    const result = ValidateCategory(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({ error: JSON.parse(result.error.message) });
+    }
+
+    const newCategory = await this.CategoriesModel.create(result);
+    res.json(newCategory);
   };
 
   update = async (req, res) => {
-    const { data } = ValidatePartialCategory(req.body);
+    const result = ValidatePartialCategory(req.body);
+    const { data } = result;
     const { id } = req.params;
     const CategoryPatch = await this.CategoriesModel.update({
       id: id,
       data: data,
     });
-    res(CategoryPatch);
+    res.json(CategoryPatch);
   };
 
   delete = async (req, res) => {
     const { id } = req.params;
     const CategoryisDelete = await this.CategoriesModel.delete(id);
-    res(CategoryisDelete);
+    res.json(CategoryisDelete);
   };
 }

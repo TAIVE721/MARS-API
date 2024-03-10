@@ -9,30 +9,36 @@ export class ElementsController {
   }
 
   getAll = async (req, res) => {
-    console.log("ola");
     const elements = await this.ElementsModel.getAll();
     res.json(elements);
   };
 
   create = async (req, res) => {
-    const { data } = validateElement(req.body);
-    const newElement = await this.ElementsModel.create(data);
-    res(newElement);
+    const result = validateElement(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({ error: JSON.parse(result.error.message) });
+    }
+
+    const newElement = await this.ElementsModel.create(result);
+
+    res.status(201).json(newElement);
   };
 
   update = async (req, res) => {
-    const { data } = validatePartialElement(req.body);
+    const result = validatePartialElement(req.body);
+    const { data } = result;
     const { id } = req.params;
     const ElementPatch = await this.ElementsModel.update({
       id: id,
       data: data,
     });
-    res(ElementPatch);
+    res.json(ElementPatch);
   };
 
   delete = async (req, res) => {
     const { id } = req.params;
     const ElementisDelete = await this.ElementsModel.delete(id);
-    res(ElementisDelete);
+    res.json(ElementisDelete);
   };
 }

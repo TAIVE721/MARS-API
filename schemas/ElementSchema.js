@@ -1,13 +1,6 @@
 import z from "zod";
 
 const ElementSchema = z.object({
-  id: z
-    .number({
-      required_error: "ID is required",
-      invalid_type_error: "ID must be a number",
-    })
-    .positive()
-    .min(1),
   Category: z.object({
     id: z
       .number({
@@ -32,6 +25,13 @@ const ElementSchema = z.object({
     required_error: "Name is required",
     invalid_type_error: "Name must be a string",
   }),
+  weight: z
+    .number({
+      required_error: "Weight is required",
+      invalid_type_error: "Weight must be a number",
+    })
+    .positive()
+    .min(1),
   description: z
     .string({
       required_error: "Description is required",
