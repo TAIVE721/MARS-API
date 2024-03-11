@@ -21,6 +21,10 @@ export class CategoriesController {
     }
 
     const newCategory = await this.CategoriesModel.create(result);
+
+    if (newCategory === false) {
+      return res.status(400).json({ error: "Category already exists" });
+    }
     res.json(newCategory);
   };
 
@@ -32,6 +36,11 @@ export class CategoriesController {
       id: id,
       data: data,
     });
+
+    if (CategoryPatch === undefined) {
+      return res.status(400).json({ error: "Error Element not exist " });
+    }
+
     res.json(CategoryPatch);
   };
 

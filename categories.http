@@ -7,19 +7,19 @@ Content-Type: application/json
 
 {
   "Priority": 4,
-  "CategoryName": "Papu despierta"
+  "CategoryName": "Ricxassardo MIlos"
 }
-
+  
 ###
-PATCH http://localhost:1234/categories/3
+PATCH http://localhost:1234/categories/19
 Content-Type: application/json
 
 {
-  "Priority": 4,
-  "CategoryName": "Papu es hora de que despiertes"
+  "Priority": 1,
+  "CategoryName": "Tienes que hornear unos momazos"
 }
 
 
 ###  
-DELETE http://localhost:1234/categories/10
+DELETE http://localhost:1234/categories/17
 

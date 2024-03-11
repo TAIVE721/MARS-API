@@ -21,6 +21,9 @@ export class ElementsController {
     }
 
     const newElement = await this.ElementsModel.create(result);
+    if (newElement === false) {
+      return res.status(400).json({ error: "Element already exists" });
+    }
 
     res.status(201).json(newElement);
   };
@@ -33,6 +36,7 @@ export class ElementsController {
       id: id,
       data: data,
     });
+
     res.json(ElementPatch);
   };
 

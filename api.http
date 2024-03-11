@@ -1,17 +1,17 @@
 ###
 GET  http://localhost:1234/elements
-        
-###    
+         
+###     
 POST http://localhost:1234/elements
 Content-Type: application/json
-
+ 
 {
     "Category": {
       "id": 3,
       "Priority": 1,
       "CategoryName": "Propulsion"
     },
-    "name": "MUchas aventruas enn appulandi",
+    "name": "Papu xsaxasde papus papu",
     "weight": 2000,
     "description": "xassa"
 }
@@ -22,13 +22,13 @@ Content-Type: application/json
 
 {
     "Category": {
-      "id": 14,
+      "id": 19,
       "Priority": 1,
       "CategoryName": "Propulsion"
     },
-    "name": "xxxxandi",
+    "name": "Wacsaxxashi wa",
     "weight": 2000,
-    "description": "xassa"
+    "description": "Para papus con papus"
 }
 
 

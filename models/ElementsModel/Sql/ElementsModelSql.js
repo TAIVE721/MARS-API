@@ -38,6 +38,20 @@ export class ElementsModelSql {
   }
 
   static async create({ data }) {
+    try {
+      const [resultOfQuery] = await connection.query(
+        `SELECT * FROM ElementsToMars`
+      );
+
+      resultOfQuery.map((element) => {
+        if (element.name === data.name) {
+          throw new Error("Element already exists");
+        }
+      });
+    } catch (error) {
+      return false;
+    }
+
     const [uuidResult] = await connection.query("SELECT UUID() uuid;");
     const [{ uuid }] = uuidResult;
 
@@ -53,7 +67,7 @@ export class ElementsModelSql {
       throw new Error("Error creating Element");
     }
 
-    const [rows] = await connection.query(
+    const [[rows]] = await connection.query(
       `
       SELECT BIN_TO_UUID(id) as id , Category , name , weight , description
        FROM ElementsToMars WHERE id = UUID_TO_BIN(?)
@@ -61,7 +75,12 @@ export class ElementsModelSql {
       [uuid]
     );
 
-    return rows[0];
+    const NewElement = {
+      ...rows,
+      Category: data.Category,
+    };
+
+    return NewElement;
   }
 
   static async update({ id, data }) {

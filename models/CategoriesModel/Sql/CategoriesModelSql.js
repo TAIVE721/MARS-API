@@ -21,6 +21,18 @@ export class CategoriesModelSql {
 
   static async create({ data }) {
     try {
+      const [resultOfQuery] = await connection.query(`SELECT * FROM categorys`);
+
+      resultOfQuery.map((element) => {
+        if (element.CategoryName === data.CategoryName) {
+          throw new Error("Element already exists");
+        }
+      });
+    } catch (error) {
+      return false;
+    }
+
+    try {
       const [result] = await connection.query(
         `
         INSERT INTO categorys (Priority, CategoryName)
@@ -48,16 +60,19 @@ export class CategoriesModelSql {
   static async update({ id, data }) {
     const [[CategoryToUpdate]] = await connection.query(
       `
-      SELECT * FROM categorys
+        SELECT * FROM categorys
         WHERE id = ?
-      `,
+        `,
       [id]
     );
+    if (CategoryToUpdate === undefined) return undefined;
 
     const Category = {
       ...CategoryToUpdate,
       ...data,
     };
+
+    console.log(Category);
 
     const result = await connection.query(
       `
