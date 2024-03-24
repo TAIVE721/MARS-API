@@ -1,54 +1,35 @@
-import z from "zod";
+import express, { json } from "express";
+import mysql from "mysql2/promise";
+process.loadEnvFile("./.env.xd");
 
-const ElementSchema = z.object({
-  Category: z.object({
-    id: z
-      .number({
-        required_error: "Category ID is required",
-        invalid_type_error: "Category ID must be a number",
-      })
-      .positive()
-      .min(1),
-    Priority: z
-      .number({
-        required_error: "Category Priority is required",
-        invalid_type_error: "Category Priority must be a number",
-      })
-      .min(1)
-      .max(5),
-    CategoryName: z.string({
-      required_error: "Category Name is required",
-      invalid_type_error: "Category Name must be a string",
-    }),
-  }),
-  name: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
-  }),
-  weight: z
-    .number({
-      required_error: "Weight is required",
-      invalid_type_error: "Weight must be a number",
-    })
-    .positive()
-    .min(1),
-  description: z
-    .string({
-      required_error: "Description is required",
-      invalid_type_error: "Description must be a string",
-    })
-    .optional(),
+const configPool = {
+  host: "mysqlversion",
+  user: "root",
+  port: process.env.MYSQLDPORT,
+  password: "",
+  database: process.env.MYSQLDB,
+};
+
+const connection = mysql.createPool(configPool);
+
+const app = express();
+
+app.use(json());
+app.disable("x-powered-by");
+
+app.get("/", async (req, res) => {
+  res.send("Hello World");
 });
 
-export function validateElement(element) {
-  return ElementSchema.safeParse(element);
-}
+app.get("/xd", async (req, res) => {
+  const [result] = await connection.query("SELECT NOW()");
 
-const result = validateElement({
-  Category: { id: 1, Priority: 1, CategoryName: "Propulsion" },
-  name: "Element 1",
-  weight: 200,
-  description: "Element 1 description",
+  //const [result2] = await connection.query("SELECT * FROM hola");
+  res.send(result);
 });
 
-console.log(result);
+const PORT = process.env.PORT || 3000;
+
+app.listen(3000, () => {
+  console.log(`Listening on port http://localhost:${PORT}`);
+});

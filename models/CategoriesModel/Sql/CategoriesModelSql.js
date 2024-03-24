@@ -1,5 +1,12 @@
 import mysql from "mysql2/promise";
 
+const poolconfig = {
+  host: "localhost",
+  user: "root",
+  port: 3308,
+  password: "1234567",
+};
+
 const config = {
   host: "127.0.0.1",
   user: "root",
@@ -9,6 +16,7 @@ const config = {
 };
 
 const connection = await mysql.createConnection(config);
+const pool = mysql.createPool(poolconfig);
 
 export class CategoriesModelSql {
   static async getAll() {
