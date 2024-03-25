@@ -9,6 +9,9 @@ export const CreateApp = ({ CategoriesModel, ElementsModel }) => {
   app.use(CorsMiddleware());
   app.disable("x-powered-by");
 
+  app.use("/papuscomotan", (req, res) => {
+    res.send("Hello World");
+  });
   app.use("/elements", createElementsRouter({ ElementsModel }));
   app.use("/categories", createCategoriesRouter({ CategoriesModel }));
 

@@ -9,6 +9,7 @@ export class ElementsController {
   }
 
   getAll = async (req, res) => {
+    console.log("hola desde controller");
     const elements = await this.ElementsModel.getAll();
     res.json(elements);
   };

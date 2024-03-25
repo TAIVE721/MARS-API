@@ -3,7 +3,7 @@ import { ElementsController } from "../controllers/ElementsController.js";
 
 export const createElementsRouter = ({ ElementsModel }) => {
   const elementsRouter = Router();
-
+  console.log("hola desde router");
   const ElementsControllerCreated = new ElementsController({ ElementsModel });
 
   elementsRouter.get("/", ElementsControllerCreated.getAll);

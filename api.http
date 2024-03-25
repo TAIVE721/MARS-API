@@ -11,27 +11,29 @@ Content-Type: application/json
       "Priority": 1,
       "CategoryName": "Propulsion"
     },
-    "name": "Papu xsaxasde papus papu",
+    "name": "Papaassaxxu ssxsaxasde papus papu",
     "weight": 2000,
     "description": "xassa"
-}
- 
+} 
+    
 ###   
-PATCH http://localhost:1234/elements/12ebbfdb-df2f-11ee-9b13-0250fe5d1b54
+PATCH http://localhost:1234/elements/467f8425-d656-4f3a-bad3-eee6f79a026b
 Content-Type: application/json
 
 {
     "Category": {
-      "id": 19,
+      "id": 2,
       "Priority": 1,
       "CategoryName": "Propulsion"
     },
-    "name": "Wacsaxxashi wa",
-    "weight": 2000,
+    "name": "Waaacsaxxashi wa",
+    "weight": 243000,
     "description": "Para papus con papus"
 }
 
 
 ###
-DELETE http://localhost:1234/elements/714e7798-df1b-11ee-9b13-0250fe5d1b54
+DELETE http://localhost:1234/elements/2cb38035-3159-4389-88c5-31564723e924
+
+### POSGRES
 

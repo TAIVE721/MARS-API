@@ -5,5 +5,6 @@ COPY . /home/app
 WORKDIR /home/app
 
 RUN npm install
+RUN npm install mysql2
 
-CMD ["node","--watch","index.js"]
+CMD ["node","--watch","StartD.js"]

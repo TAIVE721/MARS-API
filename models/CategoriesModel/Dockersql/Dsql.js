@@ -8,21 +8,12 @@ const poolconfig = {
   database: "elementsmars",
 };
 
-const config = {
-  host: "127.0.0.1",
-  user: "root",
-  port: 3306,
-  password: "",
-  database: "elementsmars",
-};
-
-const connection = await mysql.createConnection(config);
 const pool = mysql.createPool(poolconfig);
 
-export class CategoriesModelSql {
+export class CategoriesModelDSql {
   static async getAll() {
-    const [resultquery] =
-      await connection.query(`SELECT id , Priority , CategoryName
+    console.log("hola");
+    const [resultquery] = await pool.query(`SELECT id , Priority , CategoryName
     FROM Categorys`);
 
     return resultquery;
@@ -30,7 +21,7 @@ export class CategoriesModelSql {
 
   static async create({ data }) {
     try {
-      const [resultOfQuery] = await connection.query(`SELECT * FROM categorys`);
+      const [resultOfQuery] = await pool.query(`SELECT * FROM Categorys`);
 
       resultOfQuery.map((element) => {
         if (element.CategoryName === data.CategoryName) {
@@ -42,9 +33,9 @@ export class CategoriesModelSql {
     }
 
     try {
-      const [result] = await connection.query(
+      const [result] = await pool.query(
         `
-        INSERT INTO categorys (Priority, CategoryName)
+        INSERT INTO Categorys (Priority, CategoryName)
         VALUES (
           ?,?
         )
@@ -52,9 +43,9 @@ export class CategoriesModelSql {
         [data.Priority, data.CategoryName]
       );
 
-      const [[NewCategory]] = await connection.query(
+      const [[NewCategory]] = await pool.query(
         `
-        SELECT id, Priority, CategoryName FROM categorys
+        SELECT id, Priority, CategoryName FROM Categorys
         WHERE id = ?
         `,
         [result.insertId]
@@ -67,9 +58,9 @@ export class CategoriesModelSql {
   }
 
   static async update({ id, data }) {
-    const [[CategoryToUpdate]] = await connection.query(
+    const [[CategoryToUpdate]] = await pool.query(
       `
-        SELECT * FROM categorys
+        SELECT * FROM Categorys
         WHERE id = ?
         `,
       [id]
@@ -83,9 +74,9 @@ export class CategoriesModelSql {
 
     console.log(Category);
 
-    const result = await connection.query(
+    const result = await pool.query(
       `
-      UPDATE categorys
+      UPDATE Categorys
       SET
       Priority = ?,
       CategoryName = ?
@@ -101,9 +92,9 @@ export class CategoriesModelSql {
   }
 
   static async delete(id) {
-    const result = await connection.query(
+    const result = await pool.query(
       `
-      DELETE FROM categorys WHERE id = ?
+      DELETE FROM Categorys WHERE id = ?
       `,
       [id]
     );
