@@ -9,7 +9,7 @@ export class CategorysModelPostgreSql {
       FROM Categorys
     `;
 
-    return resultquery;
+    return resultquery.rows;
   }
 
   static async create({ data }) {
