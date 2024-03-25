@@ -5,7 +5,7 @@ process.loadEnvFile("./.env.postgressql");
 export class ElementsModelPostgreSql {
   static async getAll() {
     const { rows: resultquery } = await sql`
-    SELECT ElementsToMars.id::TEXT AS ElementID, categorys.id , categorys.Priority ,categorys.CategoryName , 
+    SELECT ElementsToMars.id::TEXT AS id, categorys.id as Category, 
     ElementsToMars.name, ElementsToMars.weight, ElementsToMars.description
     FROM ElementsToMars
     JOIN categorys ON ElementsToMars.Category = Categorys.id`;

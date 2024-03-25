@@ -13,7 +13,7 @@ const connection = await mysql.createConnection(config);
 export class ElementsModelSql {
   static async getAll() {
     const [resultquery] =
-      await connection.query(`SELECT BIN_TO_UUID(ElementsToMars.id) AS ElementID, categorys.id , categorys.Priority ,categorys.CategoryName , 
+      await connection.query(`SELECT BIN_TO_UUID(ElementsToMars.id) AS id, categorys.id AS Category,
     ElementsToMars.name, ElementsToMars.weight, ElementsToMars.description
     FROM ElementsToMars
     JOIN Categorys ON ElementsToMars.Category = Categorys.id`);
