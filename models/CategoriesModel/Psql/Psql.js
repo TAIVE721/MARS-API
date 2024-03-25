@@ -16,7 +16,7 @@ export class CategorysModelPostgreSql {
     const resultOfQuery = await sql`SELECT * FROM categorys`;
 
     resultOfQuery.map((element) => {
-      if (element.CategoryName === data.CategoryName) {
+      if (element.categoryname === data.categoryname) {
         throw new Error("Category already exists");
       }
     });
@@ -24,8 +24,8 @@ export class CategorysModelPostgreSql {
     const result = await sql`
       INSERT INTO categorys (Priority, CategoryName)
       VALUES (
-        ${data.Priority},
-        ${data.CategoryName}
+        ${data.priority},
+        ${data.categoryname}
       )
       RETURNING id
     `;
@@ -54,8 +54,8 @@ export class CategorysModelPostgreSql {
     await sql`
       UPDATE categorys
       SET
-      Priority = ${Category.Priority},
-      CategoryName = ${Category.CategoryName}
+      Priority = ${Category.priority},
+      CategoryName = ${Category.categoryname}
       WHERE
       id = ${id}
     `;

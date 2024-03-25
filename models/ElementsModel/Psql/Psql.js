@@ -32,7 +32,7 @@ export class ElementsModelPostgreSql {
     try {
       const result = await sql`
         INSERT INTO ElementsToMars (id, Category, name, weight, description) VALUES 
-        (uuid_generate_v4(), (SELECT id FROM categorys WHERE id = ${data.Category.id}), ${data.name}, ${data.weight}, ${data.description})
+        (uuid_generate_v4(), (SELECT id FROM categorys WHERE id = ${data.category.id}), ${data.name}, ${data.weight}, ${data.description})
         RETURNING id
         `;
       console.log(result, "result");
@@ -61,8 +61,8 @@ export class ElementsModelPostgreSql {
     console.log(elementsToUpdate.rows[0], "elementsToUpdate");
     data = {
       ...data,
-      category: data.Category
-        ? data.Category.id
+      category: data.category
+        ? data.category.id
         : elementsToUpdate.rows[0].category,
     };
 
